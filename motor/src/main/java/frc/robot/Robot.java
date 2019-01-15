@@ -11,47 +11,62 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj.SpeedController;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.drive.MecanumDrive;
+//import edu.wpi.first.wpilibj.RobotDrive;
 //import edu.wpi.first.wpilibj.Compressor;
 
-/**
- * This sample program shows how to control a motor using a joystick. In the
- * operator control part of the program, the joystick is read and the value is
- * written to the motor.
- *
- * <p>Joystick analog values range from -1 to 1 and speed controller inputs also
- * range from -1 to 1 making it easy to work together.
- */
-public class Robot extends TimedRobot {
-  private static final int claw1port = 9;
-  private static final int claw2port = 4;
-  private static final int kJoystickPort = 0;
 
+public class Robot extends TimedRobot {
+  //private static final int claw1port = 9;
+ // private static final int claw2port = 4;
+  //private static final int kJoystickPort = 0;
+
+
+
+/*
+	PWMVictorSPX m_frontLeft = new PWMVictorSPX(1);
+  PWMVictorSPX m_rearLeft = new PWMVictorSPX(2);
+	PWMVictorSPX m_frontRight = new PWMVictorSPX(3);
+  PWMVictorSPX m_rearRight = new PWMVictorSPX(7);
+  *//*
+	MecanumDrive m_drive = new MecanumDrive(m_frontLeft,m_rearLeft,m_frontRight,m_rearRight);
+*/
+
+  PWMVictorSPX spin = new PWMVictorSPX(3);
   private SpeedController claw1;
   private SpeedController claw2;
   private Joystick mstick;
-  private DigitalInput limitSwitch;
+
+  //private DigitalInput limitSwitch;
   //Compressor c = new Compressor(0);
 
   @Override
   public void robotInit() {
-    claw1 = new PWMVictorSPX(claw1port);
-    claw2 = new PWMVictorSPX(claw2port);
-    mstick = new Joystick(kJoystickPort);
-    limitSwitch = new DigitalInput(2);
+
+    /***********claw initialization********/
+    claw1 = new PWMVictorSPX(9);
+    claw2 = new PWMVictorSPX(4);
+  
+  
+    mstick = new Joystick(0);
+    //limitSwitch = new DigitalInput(2);
   }
 
   @Override
   public void teleopPeriodic() {
-    //while()
     claw1.set(mstick.getY());
     claw2.set(mstick.getY());
     while(mstick.getRawButton(1)){
-      claw1.set(-1);
-      claw2.set(-1);
+      spin.set(-1);
+      claw1.set(1);
+      claw2.set(1);
     }
-  /*
+    spin.set(mstick.getRawAxis(5));
+    //m_drive.driveCartesian(mstick.getY(),mstick.getX(),mstick.getZ());
+ /*
   if(limitSwitch.get()) {
     System.out.println("He");
     //Timer.delay(10);
@@ -61,42 +76,3 @@ public class Robot extends TimedRobot {
   }*/
   }
 }
-
-
-/*
-package frc.robot;
-
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.SampleRobot;
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PWMVictorSPX;
-import edu.wpi.first.wpilibj.SpeedController;
-
-public class Robot extends SampleRobot {
-
-	DigitalInput limitSwitch;
-  //PWMVictorSPX 
-  Joystick mstick = new Joystick(0);
-  private SpeedController claw1;
-
-    public void robotInit() {
-      limitSwitch = new DigitalInput(1);
-      claw1 = new PWMVictorSPX(9);
-    }
-
-    public void operatorControl() {
-      // more code here
-      /*while(mstick.getRawButton(1)){
-        claw1.setSpeed(0.5);
-      }*//*
-        claw1.set(mstick.getY());
-        System.out.println("e");
-    	while (limitSwitch.get()) {
-        System.out.println("He");
-    		Timer.delay(10);
-    	}
-        // more code here
-    }
-  }
-  */

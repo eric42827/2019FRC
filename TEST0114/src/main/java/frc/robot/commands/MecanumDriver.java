@@ -21,6 +21,9 @@ public class MecanumDriver{
     public static void drive(double x, double y, double z){
         mdrive.driveCartesian(x, y, z);
     }
+    public static void drive(double x, double y, double z, double gyro){
+        mdrive.driveCartesian(x, y, z, gyro);
+    }
     public static void stop(){
         mdrive.driveCartesian(0, 0, 0);
     }

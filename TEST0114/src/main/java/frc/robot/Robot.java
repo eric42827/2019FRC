@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.AnalogGyro;
 
 import org.opencv.imgproc.*;
 import org.opencv.core.*;
@@ -26,6 +28,7 @@ public class Robot extends TimedRobot {
   boolean pneumatics_boot=false, pneumatics_move=false;
 
   private Joystick mstick = new Joystick(RobotMap.joystickPort);
+  private Gyro mgyro = new AnalogGyro(1);
   private final Timer mtimer = new Timer();
 
   // vision
@@ -128,12 +131,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    MecanumDriver.drive(-mstick.getX()*0.1, mstick.getY()*0.1, 0);
+    MecanumDriver.drive(mstick.getX()*0.1, -mstick.getY()*0.1, 0);
+    //MecanumDriver.drive(mstick.getRawAxis(4)*0.1, -mstick.getY()*0.1, 0, mgyro.getAngle());
     if(mstick.getRawButton(5)){
-      MecanumDriver.rotate(-1);
+      MecanumDriver.rotate(1);
     }
     else if(mstick.getRawButton(6)){
-      MecanumDriver.rotate(1);
+      MecanumDriver.rotate(-1);
     }
 
     if(mstick.getRawButton(1)){
@@ -157,9 +161,5 @@ public class Robot extends TimedRobot {
       Pneumatics.move(pneumatics_move);
       pneumatics_move=!pneumatics_move;
     }
-  }
-
-  @Override
-  public void testPeriodic(){
   }
 }
